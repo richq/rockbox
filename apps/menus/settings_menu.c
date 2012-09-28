@@ -438,29 +438,9 @@ static int sleep_timer_voice(int selected_item, void*data)
 /* If a sleep timer is running, cancel it, otherwise start one */
 static int toggle_sleeptimer(void)
 {
-    set_sleep_timer(get_sleep_timer() ? 0
-                    : global_settings.sleeptimer_duration * 60);
+    set_sleeptimer_duration(get_sleep_timer() ? 0
+                    : global_settings.sleeptimer_duration);
     return 0;
-}
-
-/* Handle restarting a current sleep timer to the newly set default
-   duration */
-static int sleeptimer_duration_cb(int action,
-    const struct menu_item_ex *this_item)
-{
-    (void)this_item;
-    static int initial_duration;
-    switch (action)
-    {
-        case ACTION_ENTER_MENUITEM:
-            initial_duration = global_settings.sleeptimer_duration;
-            break;
-        case ACTION_EXIT_MENUITEM:
-            if (initial_duration != global_settings.sleeptimer_duration
-                    && get_sleep_timer())
-                set_sleep_timer(global_settings.sleeptimer_duration * 60);
-    }
-    return action;
 }
 
 MENUITEM_SETTING(start_screen, &global_settings.start_in_screen, NULL);
@@ -470,7 +450,7 @@ MENUITEM_FUNCTION_DYNTEXT(sleeptimer_toggle, 0, toggle_sleeptimer, NULL,
                           NULL, Icon_NOICON);
 MENUITEM_SETTING(sleeptimer_duration,
                  &global_settings.sleeptimer_duration,
-                 sleeptimer_duration_cb);
+                 NULL);
 MENUITEM_SETTING(sleeptimer_on_startup,
                  &global_settings.sleeptimer_on_startup, NULL);
 MENUITEM_SETTING(keypress_restarts_sleeptimer,
