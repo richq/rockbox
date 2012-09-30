@@ -863,6 +863,11 @@ void send_battery_level_event(void)
     }
 }
 
+void set_sleeptimer_duration(int minutes)
+{
+    set_sleep_timer(minutes * 60);
+}
+
 void set_sleep_timer(int seconds)
 {
     if (seconds) {
