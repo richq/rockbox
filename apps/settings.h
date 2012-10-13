@@ -509,7 +509,8 @@ struct user_settings
 #endif
     unsigned char lang_file[MAX_FILENAME+1]; /* last language */
     unsigned char playlist_catalog_dir[MAX_PATHNAME+1];
-    int skip_length; /* skip length */
+    int skip_length_fwd; /* skip length forwards */
+    int skip_length_bck; /* skip length backwards */
     int max_files_in_dir; /* Max entries in directory (file browser) */
     int max_files_in_playlist; /* Max entries in playlist */
     int volume_type;   /* how volume is displayed: 0=graphic, 1=percent */

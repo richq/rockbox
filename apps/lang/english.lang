@@ -10863,17 +10863,31 @@
   </voice>
 </phrase>
 <phrase>
-  id: LANG_SKIP_LENGTH
+  id: LANG_SKIP_LENGTH_FORWARD
   desc: playback settings menu
   user: core
   <source>
-    *: "Skip Length"
+    *: "Skip Length Forward"
   </source>
   <dest>
-    *: "Skip Length"
+    *: "Skip Length Forward"
   </dest>
   <voice>
-    *: "Skip Length"
+    *: "Skip Length Forward"
+  </voice>
+</phrase>
+<phrase>
+  id: LANG_SKIP_LENGTH_BACKWARDS
+  desc: playback settings menu
+  user: core
+  <source>
+    *: "Skip Length Backwards"
+  </source>
+  <dest>
+    *: "Skip Length Backwards"
+  </dest>
+  <voice>
+    *: "Skip Length Backwards"
   </voice>
 </phrase>
 <phrase>
@@ -11920,6 +11934,20 @@
   <voice>
     *: none
     swcodec: "Release Time"
+  </voice>
+</phrase>
+<phrase>
+  id: LANG_SAME_AS_FORWARD
+  desc: use the same skip length as the forward setting
+  user: core
+  <source>
+    *: "Same as Forward"
+  </source>
+  <dest>
+    *: "Same as Forward"
+  </dest>
+  <voice>
+    *: "Same as Forward"
   </voice>
 </phrase>
 <phrase>

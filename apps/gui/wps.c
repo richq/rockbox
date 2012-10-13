@@ -546,7 +546,7 @@ static void play_hop(int direction)
 {
     struct wps_state *state = skin_get_global_state();
     struct cuesheet *cue = state->id3->cuesheet;
-    long step = global_settings.skip_length*1000;
+    long step = global_settings.skip_length_fwd*1000;
     long elapsed = state->id3->elapsed;
     long remaining = state->id3->length - elapsed;
 
