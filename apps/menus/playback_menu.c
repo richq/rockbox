@@ -186,7 +186,8 @@ MAKE_MENU(unplug_menu, ID2P(LANG_HEADPHONE_UNPLUG), 0, Icon_NOICON,
           &unplug_mode, &unplug_autoresume);
 #endif
 
-MENUITEM_SETTING(skip_length, &global_settings.skip_length, NULL);
+MENUITEM_SETTING(skip_length_fwd, &global_settings.skip_length_fwd, NULL);
+MENUITEM_SETTING(skip_length_bck, &global_settings.skip_length_bck, NULL);
 MENUITEM_SETTING(prevent_skip, &global_settings.prevent_skip, NULL);
 #if CONFIG_CODEC == SWCODEC
 MENUITEM_SETTING(resume_rewind, &global_settings.resume_rewind, NULL);
@@ -217,7 +218,7 @@ MAKE_MENU(playback_settings,ID2P(LANG_PLAYBACK),0,
 #ifdef HAVE_HEADPHONE_DETECTION
          ,&unplug_menu
 #endif
-         ,&skip_length, &prevent_skip,
+         ,&skip_length_fwd, &skip_length_bck, &prevent_skip,
 
 #if CONFIG_CODEC == SWCODEC
           &resume_rewind,

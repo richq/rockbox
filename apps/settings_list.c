@@ -370,7 +370,9 @@ static const char* formatter_unit_0_is_skip_track(char *buffer, size_t buffer_si
                                            int val, const char *unit)
 {
     (void)unit;
-    if (val == -1)
+    if (val == -2)
+        return str(LANG_SAME_AS_FORWARD);
+    else if (val == -1)
         return str(LANG_SKIP_OUTRO);
     else if (val == 0)
         return str(LANG_SKIP_TRACK);
@@ -384,7 +386,9 @@ static const char* formatter_unit_0_is_skip_track(char *buffer, size_t buffer_si
 static int32_t getlang_unit_0_is_skip_track(int value, int unit)
 {
     (void)unit;
-    if (value == -1)
+    if (value == -2)
+        return LANG_SAME_AS_FORWARD;
+    else if (value == -1)
         return LANG_SKIP_OUTRO;
     else if (value == 0)
         return LANG_SKIP_TRACK;
@@ -1697,12 +1701,18 @@ const struct settings_list settings[] = {
 #endif
     OFFON_SETTING(F_BANFROMQS,cuesheet,LANG_CUESHEET_ENABLE,false,"cuesheet support",
                   NULL),
-    TABLE_SETTING(F_ALLOW_ARBITRARY_VALS, skip_length,
-                  LANG_SKIP_LENGTH, 0, "skip length",
+    TABLE_SETTING(F_ALLOW_ARBITRARY_VALS, skip_length_fwd,
+                  LANG_SKIP_LENGTH_FORWARD, 0, "skip length forward",
                   "outro,track,1s,2s,3s,5s,7s,10s,15s,20s,30s,45s,1min,90s,2min,3min,5min,10min,15min",
                   UNIT_SEC, formatter_unit_0_is_skip_track,
                   getlang_unit_0_is_skip_track, NULL,
                   19, -1,0,1,2,3,5,7,10,15,20,30,45,60,90,120,180,300,600,900),
+    TABLE_SETTING(F_ALLOW_ARBITRARY_VALS, skip_length_bck,
+                  LANG_SKIP_LENGTH_BACKWARDS, -2, "skip length backwards",
+                  "same as fwd,outro,track,1s,2s,3s,5s,7s,10s,15s,20s,30s,45s,1min,90s,2min,3min,5min,10min,15min",
+                  UNIT_SEC, formatter_unit_0_is_skip_track,
+                  getlang_unit_0_is_skip_track, NULL,
+                  20, -2,-1,0,1,2,3,5,7,10,15,20,30,45,60,90,120,180,300,600,900),
     CHOICE_SETTING(0, start_in_screen, LANG_START_SCREEN, 1, 
                    "start in screen", "previous,root,files,"
 #ifdef HAVE_TAGCACHE 
