@@ -549,6 +549,10 @@ static void play_hop(int direction)
     long step = global_settings.skip_length_fwd*1000;
     long elapsed = state->id3->elapsed;
     long remaining = state->id3->length - elapsed;
+    if (direction == -1 && global_settings.skip_length_bck != -2)
+    {
+        step = global_settings.skip_length_bck*1000;
+    }
 
     /* if cuesheet is active, then we want the current tracks end instead of
      * the total end */
