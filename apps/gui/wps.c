@@ -778,7 +778,14 @@ long gui_wps_show(void)
             }
         }
         button = skin_wait_for_action(WPS, CONTEXT_WPS|ALLOW_SOFTLOCK, 
-                                      restore ? 1 : HZ/5);
+                                      restore ? 1 :
+#if defined(HAVE_LCD_ENABLE) || defined(HAVE_LCD_SLEEP)
+                                      (lcd_active() ? HZ/5 : TIMEOUT_BLOCK)
+#else
+                                      HZ/5
+#endif
+                                      );
+
 
         /* Exit if audio has stopped playing. This happens e.g. at end of
            playlist or if using the sleep timer. */
