@@ -715,6 +715,7 @@ struct plugin_api {
     /* playback control */
     int (*playlist_amount)(void);
     int (*playlist_resume)(void);
+    void (*playlist_start_track)(unsigned int crc, int offset);
     void (*playlist_start)(int start_index, int offset);
     int (*playlist_add)(const char *filename);
     void (*playlist_sync)(struct playlist_info* playlist);

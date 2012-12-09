@@ -702,7 +702,11 @@ int ft_enter(struct tree_context* c)
         if ( play ) {
             /* the resume_index must always be the index in the
                shuffled list in case shuffle is enabled */
-            global_status.resume_index = start_index;
+            struct playlist_track_info track_info;
+            playlist_get_track_info(NULL, start_index, &track_info);
+            global_status.resume_crc32 = crc_32(track_info.filename,
+                                                strlen(track_info.filename),
+                                                -1);
             global_status.resume_offset = 0;
             status_save();
             rc = GO_TO_WPS;

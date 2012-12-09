@@ -295,14 +295,14 @@ static int wpsscrn(void* param)
         talk_shutup();
         ret_val = gui_wps_show();
     }
-    else if ( global_status.resume_index != -1 )
+    else if ( global_status.resume_crc32 != 0 )
     {
-        DEBUGF("Resume index %X offset %lX\n",
-               global_status.resume_index,
+        DEBUGF("Resume track crc32 %lX offset %lX\n",
+               (unsigned long)global_status.resume_crc32,
                (unsigned long)global_status.resume_offset);
         if (playlist_resume() != -1)
         {
-            playlist_start(global_status.resume_index,
+            playlist_start_track(global_status.resume_crc32,
                 global_status.resume_offset);
             ret_val = gui_wps_show();
         }

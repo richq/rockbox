@@ -2678,11 +2678,11 @@ static int handle_button(void)
             ret = PLUGIN_OK;
             break;
         case ACTION_WPS_PLAY:
-            if (AUDIO_STOP && rb->global_status->resume_index != -1)
+            if (AUDIO_STOP && rb->global_status->resume_crc32 != 0)
             {
                 if (rb->playlist_resume() != -1)
                 {
-                    rb->playlist_start(rb->global_status->resume_index,
+                    rb->playlist_start_track(rb->global_status->resume_crc32,
                         rb->global_status->resume_offset);
                 }
             }

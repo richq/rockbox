@@ -311,7 +311,7 @@ static bool playlist_viewer_init(struct playlist_viewer * viewer,
     size_t buffer_size;
     bool is_playing = audio_status() & (AUDIO_STATUS_PLAY | AUDIO_STATUS_PAUSE);
     bool have_list = filename || is_playing;
-    if (!have_list && (global_status.resume_index != -1))
+    if (!have_list && (global_status.resume_crc32 != 0))
     {
         /* Try to restore the list from control file */
         have_list = (playlist_resume() != -1);
@@ -455,7 +455,7 @@ static bool update_playlist(bool force)
         viewer.num_tracks = nb_tracks;
         if (viewer.num_tracks <= 0)
         {
-            global_status.resume_index = -1;
+            global_status.resume_crc32 = 0;
             global_status.resume_offset = -1;
             return false;
         }
@@ -463,7 +463,7 @@ static bool update_playlist(bool force)
                           viewer.selected_track);
         if (viewer.buffer.num_loaded <= 0)
         {
-            global_status.resume_index = -1;
+            global_status.resume_crc32 = 0;
             global_status.resume_offset = -1;
             return false;
         }
@@ -682,7 +682,7 @@ enum playlist_viewer_result playlist_viewer_ex(const char* filename)
     {
         int track;
 
-        if (global_status.resume_index != -1 && !viewer.playlist)
+        if (global_status.resume_crc32 != 0 && !viewer.playlist)
             playlist_get_resume_info(&track);
         else
             track = -1;

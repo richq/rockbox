@@ -2514,6 +2514,22 @@ int playlist_shuffle(int random_seed, int start_index)
     return playlist->index;
 }
 
+void playlist_start_track(unsigned int crc32name, int offset)
+{
+    int i;
+    struct playlist_info* playlist = &current_playlist;
+    for (i = 0 ; i < playlist->amount; i++) {
+        struct playlist_track_info track_info;
+        unsigned int crctmp;
+        playlist_get_track_info(playlist, i, &track_info);
+        crctmp = crc_32(track_info.filename, strlen(track_info.filename), -1);
+        if (crctmp == crc32name) {
+            playlist_start(i, offset);
+            return;
+        }
+    }
+}
+
 /* start playing current playlist at specified index/offset */
 void playlist_start(int start_index, int offset)
 {
@@ -2719,21 +2735,20 @@ int playlist_get_resume_info(int *resume_index)
 /* Update resume info for current playing song.  Returns -1 on error. */
 int playlist_update_resume_info(const struct mp3entry* id3)
 {
-    struct playlist_info* playlist = &current_playlist;
-
     if (id3)
     {
-        if (global_status.resume_index  != playlist->index ||
+        unsigned int crc = crc_32(id3->path, strlen(id3->path), -1);
+        if (crc != global_status.resume_crc32 ||
             global_status.resume_offset != id3->offset)
         {
-            global_status.resume_index  = playlist->index;
+            global_status.resume_crc32 = crc;
             global_status.resume_offset = id3->offset;
             status_save();
         }
     }
     else
     {
-        global_status.resume_index  = -1;
+        global_status.resume_crc32 = 0;
         global_status.resume_offset = -1;
         status_save();
     }

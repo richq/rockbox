@@ -33,11 +33,11 @@ static bool prevtrack(void)
 static bool play(void)
 {
     int audio_status = rb->audio_status();
-    if (!audio_status && rb->global_status->resume_index != -1)
+    if (!audio_status && rb->global_status->resume_crc32 != 0)
     {
         if (rb->playlist_resume() != -1)
         {
-            rb->playlist_start(rb->global_status->resume_index,
+            rb->playlist_start_track(rb->global_status->resume_crc32,
                 rb->global_status->resume_offset);
         }
     }
