@@ -226,7 +226,20 @@ void settings_load(int which)
         read_nvram_data(nvram_buffer,NVRAM_BLOCK_SIZE);
     if (which&SETTINGS_HD)
     {
-        settings_load_config(CONFIGFILE, false);
+#if CONFIG_RTC
+        bool loaded = false;
+        struct tm tm;
+        rtc_read_datetime(&tm);
+        DEBUGF("hour %d\n", tm.tm_hour);
+        if (tm.tm_hour >= 20 || tm.tm_hour < 6)
+            loaded = settings_load_config(NIGHTCONFIG, false);
+        else
+            loaded = settings_load_config(DAYCONFIG, false);
+        if (!loaded)
+#endif
+        {
+            settings_load_config(CONFIGFILE, false);
+        }
         settings_load_config(FIXEDSETTINGSFILE, false);
     }
 }
