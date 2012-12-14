@@ -73,6 +73,9 @@
 #include "statusbar-skinned.h"
 #include "bootchart.h"
 #include "scroll_engine.h"
+#if CONFIG_RTC
+#include "filefuncs.h"
+#endif
 
 #if CONFIG_CODEC == MAS3507D
 void dac_line_in(bool enable);
@@ -118,6 +121,42 @@ long lasttime = 0;
 */
 #define NVRAM_DATA_START 8
 static char nvram_buffer[NVRAM_BLOCK_SIZE];
+
+#if CONFIG_RTC
+/* Day or night configuration name used on start.  If the player is left on
+ * from 19.30 to 20.30 (say), it should not overwrite the night-time config
+ * file with the day-time one.
+ */
+static const char *config_name = CONFIGFILE;
+static const char *getconfigname(void)
+{
+    struct tm tm;
+    rtc_read_datetime(&tm);
+    const char *filename;
+    int nighttime = 21;
+    int morning = 6;
+    int sunday = 0, saturday = 6,
+        friday = 5, july = 7, august = 8;
+
+    if (tm.tm_wday == sunday || tm.tm_wday == saturday) {
+        /* lie in a bit at the weekend */
+        morning = 8;
+    } else if (tm.tm_wday == friday && (tm.tm_mon < july || tm.tm_mon > august)) {
+        /* get up later on friday, but not in July/August */
+        morning = 7;
+    }
+
+    if (tm.tm_hour >= nighttime || tm.tm_hour < morning) {
+        filename = NIGHTCONFIG;
+    } else {
+        filename = DAYCONFIG;
+    }
+    if (file_exists(filename))
+        return filename;
+    return CONFIGFILE;
+}
+#endif
+
 
 static bool read_nvram_data(char* buf, int max_len)
 {
@@ -232,7 +271,12 @@ void settings_load(int which)
         read_nvram_data(nvram_buffer,NVRAM_BLOCK_SIZE);
     if (which&SETTINGS_HD)
     {
+#if CONFIG_RTC
+        config_name = getconfigname();
+        settings_load_config(config_name, false);
+#else
         settings_load_config(CONFIGFILE, false);
+#endif
         settings_load_config(FIXEDSETTINGSFILE, false);
     }
 }
@@ -601,7 +645,11 @@ static void flush_config_block_callback(void *data)
 {
     (void)data;
     write_nvram_data(nvram_buffer,NVRAM_BLOCK_SIZE);
+#if CONFIG_RTC
+    settings_write_config(config_name, SETTINGS_SAVE_CHANGED);
+#else
     settings_write_config(CONFIGFILE, SETTINGS_SAVE_CHANGED);
+#endif
 }
 
 /*
