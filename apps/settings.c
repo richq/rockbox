@@ -72,6 +72,9 @@
 #include "viewport.h"
 #include "statusbar-skinned.h"
 #include "bootchart.h"
+#if CONFIG_RTC
+#include "filefuncs.h"
+#endif
 
 #if CONFIG_CODEC == MAS3507D
 void dac_line_in(bool enable);
@@ -112,6 +115,29 @@ long lasttime = 0;
 */
 #define NVRAM_DATA_START 8
 static char nvram_buffer[NVRAM_BLOCK_SIZE];
+
+#if CONFIG_RTC
+/* Day or night configuration name used on start.  If the player is left on
+ * from 19.30 to 20.30 (say), it should not overwrite the night-time config
+ * file with the day-time one.
+ */
+static const char *config_name = CONFIGFILE;
+static const char *getconfigname(void)
+{
+    struct tm tm;
+    rtc_read_datetime(&tm);
+    const char *filename;
+    if (tm.tm_hour >= 20 || tm.tm_hour < 6) {
+        filename = NIGHTCONFIG;
+    } else {
+        filename = DAYCONFIG;
+    }
+    if (file_exists(filename))
+        return filename;
+    return CONFIGFILE;
+}
+#endif
+
 
 static bool read_nvram_data(char* buf, int max_len)
 {
@@ -226,7 +252,12 @@ void settings_load(int which)
         read_nvram_data(nvram_buffer,NVRAM_BLOCK_SIZE);
     if (which&SETTINGS_HD)
     {
+#if CONFIG_RTC
+        config_name = getconfigname();
+        settings_load_config(config_name, false);
+#else
         settings_load_config(CONFIGFILE, false);
+#endif
         settings_load_config(FIXEDSETTINGSFILE, false);
     }
 }
@@ -595,7 +626,11 @@ static void flush_config_block_callback(void *data)
 {
     (void)data;
     write_nvram_data(nvram_buffer,NVRAM_BLOCK_SIZE);
+#if CONFIG_RTC
+    settings_write_config(config_name, SETTINGS_SAVE_CHANGED);
+#else
     settings_write_config(CONFIGFILE, SETTINGS_SAVE_CHANGED);
+#endif
 }
 
 /*
