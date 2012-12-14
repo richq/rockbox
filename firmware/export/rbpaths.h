@@ -115,6 +115,8 @@
 
 #define VIEWERS_CONFIG      ROCKBOX_DIR "/viewers.config"
 #define CONFIGFILE          ROCKBOX_DIR "/config.cfg"
+#define NIGHTCONFIG         ROCKBOX_DIR "/night.cfg"
+#define DAYCONFIG           ROCKBOX_DIR "/day.cfg"
 #define FIXEDSETTINGSFILE   ROCKBOX_DIR "/fixed.cfg"
 
 #define PLAYLIST_CONTROL_FILE   ROCKBOX_DIR "/.playlist_control"
