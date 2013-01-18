@@ -558,6 +558,14 @@ static bool delete_file_dir(void)
     char file_to_delete[MAX_PATH];
     strcpy(file_to_delete, selected_file);
 
+    bool is_playing = audio_status() & AUDIO_STATUS_PLAY;
+    struct mp3entry* id3 = audio_current_track();
+    if (is_playing && strcmp(selected_file, id3->path) == 0)
+    {
+        splash(HZ, ID2P(LANG_NOW_PLAYING));
+        return false;
+    }
+
     const char *lines[]={
         ID2P(LANG_REALLY_DELETE),
         file_to_delete
@@ -1188,7 +1196,7 @@ MAKE_ONPLAYMENU( wps_onplay_menu, ID2P(LANG_ONPLAY_MENU_TITLE),
            &pictureflow_item,
 #endif           
            &browse_id3_item, &list_viewers_item,
-           &delete_file_item, &view_cue_item,
+           &view_cue_item,
 #ifdef HAVE_PITCHCONTROL
            &pitch_screen_item,
 #endif
