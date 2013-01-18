@@ -686,6 +686,13 @@ static int remove_dir(struct dirrecurse_params *parm)
 /* share code for file and directory deletion, saves space */
 static int delete_file_dir(void)
 {
+    bool is_playing = audio_status() & AUDIO_STATUS_PLAY;
+    struct mp3entry* id3 = audio_current_track();
+    if (is_playing && strcmp(selected_file, id3->path) == 0) {
+        clear_display(true);
+        splash(HZ, ID2P(LANG_NOW_PLAYING));
+        return 1;
+    }
     if (confirm_delete(selected_file) != YESNO_YES) {
         return 1;
     }
@@ -1379,7 +1386,7 @@ MAKE_ONPLAYMENU( wps_onplay_menu, ID2P(LANG_ONPLAY_MENU_TITLE),
            &pictureflow_item,
 #endif           
            &browse_id3_item, &list_viewers_item,
-           &delete_file_item, &view_cue_item,
+           &view_cue_item,
 #ifdef HAVE_PITCHCONTROL
            &pitch_screen_item,
 #endif
