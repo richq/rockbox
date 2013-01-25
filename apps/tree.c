@@ -192,7 +192,21 @@ static enum themable_icons tree_get_fileicon(int selected_item, void * data)
 #endif
     {
         struct entry* e = tree_get_entry_at(local_tc, selected_item);
-        return filetype_get_icon(e->attr);
+        int icon = filetype_get_icon(e->attr);
+        if (icon == Icon_Audio)
+        {
+            /* if playing a track, show that file as playing.. */
+            bool is_playing = audio_status() & AUDIO_STATUS_PLAY;
+            struct mp3entry* id3 = audio_current_track();
+            size_t currdirlen = strlen(local_tc->currdir);
+            size_t pathlen = strlen(id3->path);
+            /* compare "name" part first, as if that isn't the same, no point checking path */
+            if (is_playing && pathlen > currdirlen
+                && strcmp(e->name, &id3->path[currdirlen + 1]) == 0
+                && strncmp(local_tc->currdir, id3->path, currdirlen) == 0)
+                icon = Icon_Playback_menu;
+        }
+        return icon;
     }
 }
 
