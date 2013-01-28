@@ -30,6 +30,7 @@ char str_size[64];
 char str_dircount[64];
 char str_filecount[64];
 char str_date[64];
+char str_year[64];
 char str_time[64];
 
 char str_title[MAX_PATH];
@@ -49,6 +50,7 @@ static const char* props_file[] =
     "[Artist]",     str_artist,
     "[Title]",      str_title,
     "[Album]",      str_album,
+    "[Year]",       str_year,
     "[Duration]",   str_duration,
 };
 static const char* props_dir[] =
@@ -117,6 +119,18 @@ static bool file_properties(char* selected_file)
 #endif
                 {
                     long dur = id3.length / 1000;           /* seconds */
+
+                    if (id3.year_string)
+                    {
+                        rb->snprintf(str_year, sizeof str_year, "%s", id3.year_string);
+                        num_properties++;
+                    }
+                    else if (id3.year > 1700)
+                    {
+                        rb->snprintf(str_year, sizeof str_year, "%d", id3.year);
+                        num_properties++;
+                    }
+
                     rb->snprintf(str_artist, sizeof str_artist,
                                  "%s", id3.artist ? id3.artist : "");
                     rb->snprintf(str_title, sizeof str_title,
