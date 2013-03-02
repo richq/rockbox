@@ -587,9 +587,20 @@ static int confirm_overwrite(void)
 
 static int confirm_delete(const char *file)
 {
-    const char *lines[] = { ID2P(LANG_REALLY_DELETE), file };
+    const char *lines[] = { ID2P(LANG_REALLY_DELETE), file, 0, 0, 0 };
     const char *yes_lines[] = { ID2P(LANG_DELETING), file };
-    const struct text_message message = { lines, 2 };
+    int line_cnt = 2;
+    struct mp3entry entry;
+    if (mp3info(&entry, file_to_delete) == false) {
+        if (entry.album && strlen(entry.album) > 0)
+            lines[line_cnt++] = entry.album;
+        if (entry.artist && strlen(entry.artist) > 0)
+            lines[line_cnt++] = entry.artist;
+        if (entry.title && strlen(entry.title) > 0)
+            lines[line_cnt++] = entry.title;
+    }
+
+    const struct text_message message = { lines, line_cnt };
     const struct text_message yes_message = { yes_lines, 2 };
     return gui_syncyesno_run(&message, &yes_message, NULL);
 }
