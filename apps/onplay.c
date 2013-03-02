@@ -566,16 +566,30 @@ static bool delete_file_dir(void)
         return false;
     }
 
+    struct mp3entry entry;
+
     const char *lines[]={
         ID2P(LANG_REALLY_DELETE),
-        file_to_delete
+        file_to_delete,
+        0,
+        0,
+        0,
     };
     const char *yes_lines[]={
         ID2P(LANG_DELETING),
         file_to_delete
     };
+    int line_cnt = 2;
+    if (mp3info(&entry, file_to_delete) == false) {
+        if (entry.album && strlen(entry.album) > 0)
+            lines[line_cnt++] = entry.album;
+        if (entry.artist && strlen(entry.artist) > 0)
+            lines[line_cnt++] = entry.artist;
+        if (entry.title && strlen(entry.title) > 0)
+            lines[line_cnt++] = entry.title;
+    }
 
-    const struct text_message message={lines, 2};
+    const struct text_message message={lines, line_cnt};
     const struct text_message yes_message={yes_lines, 2};
 
     if(gui_syncyesno_run(&message, &yes_message, NULL)!=YESNO_YES)
