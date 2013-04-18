@@ -132,7 +132,17 @@ static const char *getconfigname(void)
     struct tm tm;
     rtc_read_datetime(&tm);
     const char *filename;
-    if (tm.tm_hour >= 20 || tm.tm_hour < 6) {
+    int nighttime = 21;
+    int morning = 6;
+    if (tm.tm_wday == 0 || tm.tm_wday == 6) {
+        /* sleep in at the weekend */
+        morning = 9;
+    } else if (tm.tm_wday == 5) {
+        /* get up late on friday */
+        morning = 7;
+    }
+
+    if (tm.tm_hour >= nighttime || tm.tm_hour < morning) {
         filename = NIGHTCONFIG;
     } else {
         filename = DAYCONFIG;
