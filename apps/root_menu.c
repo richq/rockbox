@@ -312,7 +312,7 @@ static int wpsscrn(void* param)
     }
     else
     {
-        splash(HZ*2, ID2P(LANG_NOTHING_TO_RESUME));
+        splash(HZ/2, ID2P(LANG_NOTHING_TO_RESUME));
     }
     pop_current_activity();
     return ret_val;
