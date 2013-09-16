@@ -575,6 +575,7 @@ struct user_settings
                                  2=custom */
     unsigned char autoresume_paths[MAX_PATHNAME+1]; /* colon-separated list */
     bool runtimedb;           /* runtime database active? */
+    bool show_random;         /* show <Random> in database menus? */
     unsigned char tagcache_scan_paths[MAX_PATHNAME+1];
 #endif /* HAVE_TAGCACHE */
 
