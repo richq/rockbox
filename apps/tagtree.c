@@ -1431,8 +1431,9 @@ static int retrieve_entries(struct tree_context *c, int offset, bool init)
             dptr++;
             current_entry_count++;
             special_entry_count++;
+            total_count++;
         }
-        if (offset <= 1)
+        if (global_settings.show_random && offset <= 1)
         {
             dptr->newtable = NAVIBROWSE;
             dptr->name = str(LANG_TAGNAVI_RANDOM);
@@ -1440,9 +1441,8 @@ static int retrieve_entries(struct tree_context *c, int offset, bool init)
             dptr++;
             current_entry_count++;
             special_entry_count++;
+            total_count++;
         }
-
-        total_count += 2;
     }
 
     while (tagcache_get_next(&tcs))
