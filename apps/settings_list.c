@@ -1438,6 +1438,8 @@ const struct settings_list settings[] = {
 
     OFFON_SETTING(0, runtimedb, LANG_RUNTIMEDB_ACTIVE, false,
                   "gather runtime data", NULL),
+    OFFON_SETTING(0, show_random, LANG_RANDOM_MENU_ACTIVE, true,
+                  "show random option", NULL),
     TEXT_SETTING(0, tagcache_scan_paths, "database scan paths",
                  DEFAULT_TAGCACHE_SCAN_PATHS, NULL, NULL),
 #endif
