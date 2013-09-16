@@ -92,6 +92,7 @@ MENUITEM_FUNCTION(tc_update, 0, ID2P(LANG_TAGCACHE_UPDATE),
                     (int(*)(void))tagcache_update_with_splash,
                     NULL, NULL, Icon_NOICON);
 MENUITEM_SETTING(runtimedb, &global_settings.runtimedb, NULL);
+MENUITEM_SETTING(show_random, &global_settings.show_random, NULL);
 MENUITEM_FUNCTION(tc_export, 0, ID2P(LANG_TAGCACHE_EXPORT),
                     (int(*)(void))tagtree_export, NULL,
                     NULL, Icon_NOICON);
@@ -105,7 +106,8 @@ MAKE_MENU(tagcache_menu, ID2P(LANG_TAGCACHE), 0, Icon_NOICON,
 #ifdef HAVE_TC_RAMCACHE
                 &tagcache_ram,
 #endif
-                &tagcache_autoupdate, &tc_init, &tc_update, &runtimedb,
+                &tagcache_autoupdate, &tc_init, &tc_update,
+                &runtimedb, &show_random,
                 &tc_export, &tc_import, &tc_paths
                 );
 #endif /* HAVE_TAGCACHE */
