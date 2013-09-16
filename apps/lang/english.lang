@@ -13251,3 +13251,16 @@
     swcodec: "Q"
   </voice>
 </phrase>
+<phrase>
+  id: LANG_RANDOM_MENU_ACTIVE
+  desc: in settings_menu
+  user: core
+  <source>
+    *: "Random menu active"
+  </source>
+  <dest>
+    *: "Random menu active"
+  </dest>
+  <voice>
+    *: "Random menu active"
+</phrase>
