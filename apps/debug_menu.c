@@ -950,7 +950,12 @@ static bool view_battery(void)
 
                 lcd_putsf(0, 0, "battery %d.%03dV", power_history[0] / 1000,
                          power_history[0] % 1000);
-                lcd_putsf(0, 1, "%d.%03d-%d.%03dV (%2dmV)",
+                lcd_putsf(0, 1,
+#if LCD_WIDTH >= 160
+                          "%d.%03d-%d.%03dV (%2dmV)",
+#else
+                          "%d.%03d-%d.%03dV%2dmV",
+#endif
                           minv / 1000, minv % 1000, maxv / 1000, maxv % 1000,
                           grid);
 #elif (CONFIG_BATTERY_MEASURE & PERCENTAGE_MEASURE)
