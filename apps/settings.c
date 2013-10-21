@@ -135,8 +135,9 @@ static const char *getconfigname(void)
     const char *filename;
     int nighttime = 21;
     int morning = 6;
-    if (tm.tm_wday == 0 || tm.tm_wday == 6) {
-        /* sleep in at the weekend */
+    if (tm.tm_wday == 0 /* sun */) {
+        morning = 8;
+    } else if (tm.tm_wday == 6 /* sat */) {
         morning = 9;
     } else if (tm.tm_wday == 5 && (tm.tm_mon < 7 || tm.tm_mon > 8)) {
         /* get up late on friday, but not in July/August */
