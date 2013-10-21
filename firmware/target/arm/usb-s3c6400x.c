@@ -349,8 +349,10 @@ void usb_drv_exit(void)
     DCTL = DCTL_pwronprgdone | DCTL_sftdiscon;
 
     VIC_INT_EN_CLEAR = INTERRUPT_USB;
+    GAHBCFG &= ~GAHBCFG_glblintrmsk;
 
     sleep(HZ/20);
+    PCGCCTL = 1;  /* Shut down PHY clock */
 
     CGU_USB = 0;
     bitclr32(&CGU_PERI, CGU_USB_CLOCK_ENABLE);
