@@ -377,6 +377,25 @@ RB_WRAP(current_tick)
     return 1;
 }
 
+#define ENTRY_STRING(x) lua_pushstring(L, entry.x ? entry.x : ""); lua_setfield(L, -2, #x);
+RB_WRAP(mp3info)
+{
+    struct mp3entry entry;
+    const char *path = luaL_checkstring(L, 1);
+    if (rb->mp3info(&entry, path))
+    {
+        lua_pushnil(L);
+        return 1;
+    }
+
+    lua_newtable(L);
+    ENTRY_STRING(title);
+    ENTRY_STRING(artist);
+    ENTRY_STRING(album);
+    return 1;
+}
+#undef ENTRY_STRING
+
 #ifdef HAVE_TOUCHSCREEN
 RB_WRAP(action_get_touchscreen_press)
 {
@@ -705,6 +724,7 @@ static const luaL_Reg rocklib[] =
 
     /* Kernel */
     R(current_tick),
+    R(mp3info),
 
     /* Buttons */
 #ifdef HAVE_TOUCHSCREEN
