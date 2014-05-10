@@ -198,7 +198,7 @@ build() {
     fi
 
     echo "ROCKBOXDEV: mkdir build-$toolname"
-    mkdir build-$toolname
+    mkdir -p build-$toolname
 
     echo "ROCKBOXDEV: cd build-$toolname"
     cd build-$toolname
@@ -268,7 +268,7 @@ build_ctng() {
     fi
 
     # copy config and cd to $builddir
-    mkdir $builddir/build-$ctng_target
+    mkdir -p $builddir/build-$ctng_target
     ctng_config="$builddir/build-$ctng_target/.config"
     cat "$dlwhere/ct-ng-config" | sed -e "s,\(CT_PREFIX_DIR=\).*,\1$prefix," > $ctng_config
     cd $builddir/build-$ctng_target
