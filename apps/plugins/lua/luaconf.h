@@ -372,7 +372,7 @@
 */
 #define LUAL_BUFFERSIZE		1024
 
-#if (CONFIG_PLATFORM & (PLATFORM_NATIVE|PLATFORM_HOSTED))
+#ifdef SIMULATOR
 #include <stdio.h>
 #else
 typedef int FILE;
