@@ -73,9 +73,6 @@
 #include "statusbar-skinned.h"
 #include "bootchart.h"
 #include "scroll_engine.h"
-#if CONFIG_RTC
-#include "filefuncs.h"
-#endif
 
 #if CONFIG_CODEC == MAS3507D
 void dac_line_in(bool enable);
