@@ -591,7 +591,7 @@ static int confirm_delete(const char *file)
     const char *yes_lines[] = { ID2P(LANG_DELETING), file };
     int line_cnt = 2;
     struct mp3entry entry;
-    if (mp3info(&entry, file_to_delete) == false) {
+    if (mp3info(&entry, file) == false) {
         if (entry.album && strlen(entry.album) > 0)
             lines[line_cnt++] = entry.album;
         if (entry.artist && strlen(entry.artist) > 0)
