@@ -708,9 +708,6 @@ static int delete_file_dir(void)
         return 1;
     }
 
-    clear_display(true);
-    splash(HZ/2, str(LANG_DELETING));
-
     int rc = -1;
 
     if (selected_file_attr & ATTR_DIRECTORY) { /* true if directory */
